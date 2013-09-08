@@ -11,6 +11,7 @@ import java.util.Map;
 import org.snucse.oxstco.time.business.DBMgr;
 import org.snucse.oxstco.time.business.Time;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,11 +25,12 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+@SuppressLint("SimpleDateFormat") //国际化时应解决此问题
 public abstract class ListGenericFragment extends ListFragment {
 
 	protected static Calendar tempCalendar = null;
 	public static final int TODAY = 1, WEEK = 2, MONTH = 3, YEAR = 4;
-	private TextView current;
+	private TextView pageTextView;
 	// 屏幕列表中显示项的列表。
 	public List<Map<String, Object>> data;
 	protected SimpleDateFormat listTextFormat;
@@ -83,7 +85,8 @@ public abstract class ListGenericFragment extends ListFragment {
 		this.listTextFormat = new SimpleDateFormat(Time.getFormatByType(
 				this.type, false));
 
-		this.updateDataFromDatabase();
+		this.updateTimesFromDatabase();
+		this.updateDataFromTimes();
 		SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), data,
 				R.layout.vlist, new String[] { "text_subject", "img_type" },
 				new int[] { R.id.text_subject, R.id.img_type });
@@ -108,26 +111,22 @@ public abstract class ListGenericFragment extends ListFragment {
 	protected void onMovingPage(int direction) {
 		this.seeAll = false;
 		this.getPageCalendar().add(this.pageStep, direction);
-		this.updatePageText();
-		this.updateDataFromTimes();
-		this.updateListFromData();
+		this.updateListFromTimes();
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		current = (TextView) getView().findViewById(R.id.text_current);
-		if (current == null) {
+		pageTextView = (TextView) getView().findViewById(R.id.text_current);
+		if (pageTextView == null) {
 			Log.i("mlf", "一个时有时无的错误：current为空引用");
 		}
-		this.onMovingPage(0);
+		this.updateListFromTimes();
 	}
 
 	public void seeAll() {
 		this.seeAll = true;
-		this.updateDataFromTimes();
-		this.updatePageText();
-		this.updateListFromData();
+		this.updateListFromTimes();
 	}
 
 	public void update(Time t) {
@@ -137,11 +136,10 @@ public abstract class ListGenericFragment extends ListFragment {
 		this.updateListFromDatabase();
 	}
 
-	private void updateDataFromDatabase() {
-		this.updateTimesFromDatabase();
-		this.updateDataFromTimes();
-	}
-
+	/**
+	 * 从数据库中取出列表三部曲之第二步，</br>
+	 * 将Times列表中符合当前页的项目放到待显示的data列表中。
+	 */
 	private void updateDataFromTimes() {
 		if (this.data == null) {
 			this.data = new ArrayList<Map<String, Object>>();
@@ -160,27 +158,51 @@ public abstract class ListGenericFragment extends ListFragment {
 		}
 	}
 
+	/**
+	 * 从数据库中取出列表三部曲之第三步，</br>
+	 * 提醒data列表已被更改，使其刷新,</br>
+	 * 并更新指示框中的显示时间。
+	 */
 	private void updateListFromData() {
 		// 只有在data仍指向原来的对象时才起作用
 		((SimpleAdapter) getListAdapter()).notifyDataSetChanged();
+		this.updatePageText();
 	}
 
-	public void updateListFromDatabase() {
-		this.updateDataFromDatabase();
+	/**
+	 * 从数据库中取出列表三部曲三合一版，</br>
+	 * 从数据库从拿数据，并刷新当前页列表。
+	 */
+	protected void updateListFromDatabase() {
+		this.updateTimesFromDatabase();
+		this.updateDataFromTimes();
+		this.updateListFromData();
+	}
+	
+	/**
+	 * 通过重新过滤times列表，改变当前页显示内容。</br>
+	 * 翻页、切换标签，或配置变动时调用。</br>
+	 * 要不是当Fragment显示出来是并不会</br>
+	 * 调用onResume方法，才不用这么费劲地</br>
+	 * 把这个方法可哪儿都调一下呢。
+	 */
+	public void updateListFromTimes() {
+		this.updateDataFromTimes();
 		this.updateListFromData();
 	}
 
 	private void updatePageText() {
 		if (this.seeAll) {
-			this.current.setText("All");
+			this.pageTextView.setText("All");
 			return;
 		}
 
-		this.current
+		this.pageTextView
 				.setText(pageTextFormat.format(getPageCalendar().getTime()));
 	}
 
 	/**
+	 * 从数据库中获取列表三部曲中第一步，</br>
 	 * 将数据库中属于该type的time对象取出， 保存在times列表中。
 	 */
 	private void updateTimesFromDatabase() {

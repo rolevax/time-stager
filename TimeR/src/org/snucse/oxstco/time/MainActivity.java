@@ -68,8 +68,7 @@ public class MainActivity extends FragmentActivity {
 		tabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			@Override
 			public void onTabChanged(String tabId) {
-				//不知道是干什么的，要解决
-				MainActivity.this.getCurrentFragment().onMovingPage(0);
+				MainActivity.this.getCurrentFragment().updateListFromTimes();
 			}
 		});
 		this.getOverflowMenu();
@@ -189,7 +188,7 @@ public class MainActivity extends FragmentActivity {
 				.findFragmentById(getFragmentIdByType(type));
 	}
 
-	private ListGenericFragment getCurrentFragment() {
+	protected ListGenericFragment getCurrentFragment() {
 		int type = tabHost.getCurrentTab() + 1;
 		return getFragmentByType(type);
 	}
