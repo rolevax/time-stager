@@ -4,10 +4,6 @@ import java.util.Calendar;
 
 import org.snucse.oxstco.time.business.Time;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.Log;
-
 
 public class ListWeekFragment extends ListGenericFragment {
 	public ListWeekFragment() {

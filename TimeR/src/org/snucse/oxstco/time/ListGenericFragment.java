@@ -27,12 +27,12 @@ import android.widget.TextView;
 public abstract class ListGenericFragment extends ListFragment {
 
 	protected int type, pageStep;
-	protected SimpleDateFormat pageTextFormat ;
-	protected SimpleDateFormat listTextFormat ;
+	protected SimpleDateFormat pageTextFormat;
+	protected SimpleDateFormat listTextFormat;
 	public static final int TODAY = 1, WEEK = 2, MONTH = 3, YEAR = 4;
 	private TextView current;
-	private boolean seeAll = false ;
-	protected Calendar tempCalendar ;
+	private boolean seeAll = false;
+	protected static Calendar tempCalendar = null;
 
 	// 屏幕列表中显示项的列表。
 	public List<Map<String, Object>> data;
@@ -45,9 +45,9 @@ public abstract class ListGenericFragment extends ListFragment {
 	}
 
 	protected Calendar getPageCalendar() {
-		return ((MainActivity)getActivity()).getPageCalendar();
+		return ((MainActivity) getActivity()).getPageCalendar();
 	}
-	
+
 	public void add(Time t) {
 		DBMgr dbm = DBMgr.getInstance(getActivity());
 		dbm.add(t);
@@ -57,12 +57,9 @@ public abstract class ListGenericFragment extends ListFragment {
 
 	/*
 	 * 
-	 * 下个目标：
-	 * 实现监听settings变动，实施更改week list frag中
-	 * 的cal设定（add已被destory，不用管）
-	 * 
+	 * 下个目标： 实现监听settings变动，实施更改week list frag中 的cal设定（add已被destory，不用管）
 	 */
-	
+
 	public void delete(Time t) {
 		DBMgr dbm = DBMgr.getInstance(getActivity());
 		dbm.delete(t);
@@ -89,9 +86,9 @@ public abstract class ListGenericFragment extends ListFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		current = (TextView)getView().findViewById(R.id.text_current);
-		if (current == null){
-			Log.i("mlf","一个时有时无的错误：current为空引用");
+		current = (TextView) getView().findViewById(R.id.text_current);
+		if (current == null) {
+			Log.i("mlf", "一个时有时无的错误：current为空引用");
 		}
 		this.onMovingPage(0);
 	}
@@ -99,15 +96,21 @@ public abstract class ListGenericFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		this.tempCalendar = Calendar.getInstance();
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		String firstDay = sharedPref.getString("pref_firstDayOfWeek", "fuck");
-		this.tempCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
-		
-		this.pageTextFormat = new SimpleDateFormat(Time.getFormatByType(this.type, true));
-		this.listTextFormat = new SimpleDateFormat(Time.getFormatByType(this.type, false));
-		
+
+		if (tempCalendar == null) {
+			tempCalendar = Calendar.getInstance();
+			SharedPreferences sharedPref = PreferenceManager
+					.getDefaultSharedPreferences(getActivity());
+			String firstDay = sharedPref.getString("pref_firstDayOfWeek",
+					"fuck");
+			tempCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
+		}
+
+		this.pageTextFormat = new SimpleDateFormat(Time.getFormatByType(
+				this.type, true));
+		this.listTextFormat = new SimpleDateFormat(Time.getFormatByType(
+				this.type, false));
+
 		this.updateDataFromDatabase();
 		SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), data,
 				R.layout.vlist, new String[] { "text_subject", "img_type" },
@@ -131,7 +134,7 @@ public abstract class ListGenericFragment extends ListFragment {
 
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		Intent intent = new Intent(getActivity(), MenuActivity.class);
-		intent.putExtra("time", (Serializable)data.get(position).get("time"));
+		intent.putExtra("time", (Serializable) data.get(position).get("time"));
 		intent.putExtra("type", type);
 		getActivity().startActivityForResult(intent, 0);
 	}
@@ -153,7 +156,8 @@ public abstract class ListGenericFragment extends ListFragment {
 		for (Time t : times) {
 			if (this.seeAll || this.filterTime(t)) {
 				map = new HashMap<String, Object>();
-				map.put("text_subject", t.subject+"\n"+listTextFormat.format(t.datetime));
+				map.put("text_subject",
+						t.subject + "\n" + listTextFormat.format(t.datetime));
 				map.put("img_type", R.drawable.ic_launcher);
 				map.put("time", t);
 				this.data.add(map);
@@ -169,7 +173,7 @@ public abstract class ListGenericFragment extends ListFragment {
 	protected abstract boolean filterTime(Time t);
 
 	protected void onMovingPage(int direction) {
-		this.seeAll = false ;
+		this.seeAll = false;
 		this.getPageCalendar().add(this.pageStep, direction);
 		this.updatePageText();
 		this.updateDataFromTimes();
@@ -181,12 +185,13 @@ public abstract class ListGenericFragment extends ListFragment {
 			this.current.setText("All");
 			return;
 		}
-		
-		this.current.setText(pageTextFormat.format(getPageCalendar().getTime()));
+
+		this.current
+				.setText(pageTextFormat.format(getPageCalendar().getTime()));
 	}
 
 	public void seeAll() {
-		this.seeAll = true ;
+		this.seeAll = true;
 		this.updateDataFromTimes();
 		this.updatePageText();
 		this.updateListFromData();

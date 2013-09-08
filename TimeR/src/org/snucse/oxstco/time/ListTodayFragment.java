@@ -1,6 +1,5 @@
 package org.snucse.oxstco.time;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.snucse.oxstco.time.business.Time;
