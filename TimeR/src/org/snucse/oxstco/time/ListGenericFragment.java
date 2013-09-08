@@ -26,26 +26,22 @@ import android.widget.TextView;
 
 public abstract class ListGenericFragment extends ListFragment {
 
-	protected int type, pageStep;
-	protected SimpleDateFormat pageTextFormat;
-	protected SimpleDateFormat listTextFormat;
+	protected static Calendar tempCalendar = null;
 	public static final int TODAY = 1, WEEK = 2, MONTH = 3, YEAR = 4;
 	private TextView current;
-	private boolean seeAll = false;
-	protected static Calendar tempCalendar = null;
-
 	// 屏幕列表中显示项的列表。
 	public List<Map<String, Object>> data;
+	protected SimpleDateFormat listTextFormat;
+	protected SimpleDateFormat pageTextFormat;
+	private boolean seeAll = false;
 
 	// 保存属于该类别fragment的所有Time对象的列表
 	public List<Time> times;
 
+	protected int type, pageStep;
+
 	public ListGenericFragment() {
 		super();
-	}
-
-	protected Calendar getPageCalendar() {
-		return ((MainActivity) getActivity()).getPageCalendar();
 	}
 
 	public void add(Time t) {
@@ -55,11 +51,6 @@ public abstract class ListGenericFragment extends ListFragment {
 		this.updateListFromDatabase();
 	}
 
-	/*
-	 * 
-	 * 下个目标： 实现监听settings变动，实施更改week list frag中 的cal设定（add已被destory，不用管）
-	 */
-
 	public void delete(Time t) {
 		DBMgr dbm = DBMgr.getInstance(getActivity());
 		dbm.delete(t);
@@ -68,29 +59,10 @@ public abstract class ListGenericFragment extends ListFragment {
 		this.updatePageText();
 	}
 
-	public void update(Time t) {
-		DBMgr dbm = DBMgr.getInstance(getActivity());
-		dbm.update(t);
+	protected abstract boolean filterTime(Time t);
 
-		this.updateListFromDatabase();
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		View v = inflater.inflate(R.layout.fragment_week, container, false);
-		return v;
-	}
-
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		current = (TextView) getView().findViewById(R.id.text_current);
-		if (current == null) {
-			Log.i("mlf", "一个时有时无的错误：current为空引用");
-		}
-		this.onMovingPage(0);
+	protected Calendar getPageCalendar() {
+		return ((MainActivity) getActivity()).getPageCalendar();
 	}
 
 	@Override
@@ -118,18 +90,12 @@ public abstract class ListGenericFragment extends ListFragment {
 		setListAdapter(simpleAdapter);
 	}
 
-	public void updateListFromDatabase() {
-		// 只有在data仍指向原来的对象时才起作用
-		/*
-		 * 因此在updateDataFromist方法中， 采用了先吧data清空，再重新添加的方法。
-		 */
-		// 保险起见，弄了个times，为了保有id等信息。
-		this.updateDataFromDatabase();
-		this.updateListFromData();
-	}
-
-	private void updateListFromData() {
-		((SimpleAdapter) getListAdapter()).notifyDataSetChanged();
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		View v = inflater.inflate(R.layout.fragment_week, container, false);
+		return v;
 	}
 
 	public void onListItemClick(ListView parent, View v, int position, long id) {
@@ -139,12 +105,41 @@ public abstract class ListGenericFragment extends ListFragment {
 		getActivity().startActivityForResult(intent, 0);
 	}
 
-	/**
-	 * 将数据库中属于该type的time对象取出， 保存在times列表中。
-	 */
-	private void updateTimesFromDatabase() {
+	protected void onMovingPage(int direction) {
+		this.seeAll = false;
+		this.getPageCalendar().add(this.pageStep, direction);
+		this.updatePageText();
+		this.updateDataFromTimes();
+		this.updateListFromData();
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		current = (TextView) getView().findViewById(R.id.text_current);
+		if (current == null) {
+			Log.i("mlf", "一个时有时无的错误：current为空引用");
+		}
+		this.onMovingPage(0);
+	}
+
+	public void seeAll() {
+		this.seeAll = true;
+		this.updateDataFromTimes();
+		this.updatePageText();
+		this.updateListFromData();
+	}
+
+	public void update(Time t) {
 		DBMgr dbm = DBMgr.getInstance(getActivity());
-		this.times = dbm.getListByType(this.type);
+		dbm.update(t);
+
+		this.updateListFromDatabase();
+	}
+
+	private void updateDataFromDatabase() {
+		this.updateTimesFromDatabase();
+		this.updateDataFromTimes();
 	}
 
 	private void updateDataFromTimes() {
@@ -165,18 +160,13 @@ public abstract class ListGenericFragment extends ListFragment {
 		}
 	}
 
-	private void updateDataFromDatabase() {
-		this.updateTimesFromDatabase();
-		this.updateDataFromTimes();
+	private void updateListFromData() {
+		// 只有在data仍指向原来的对象时才起作用
+		((SimpleAdapter) getListAdapter()).notifyDataSetChanged();
 	}
 
-	protected abstract boolean filterTime(Time t);
-
-	protected void onMovingPage(int direction) {
-		this.seeAll = false;
-		this.getPageCalendar().add(this.pageStep, direction);
-		this.updatePageText();
-		this.updateDataFromTimes();
+	public void updateListFromDatabase() {
+		this.updateDataFromDatabase();
 		this.updateListFromData();
 	}
 
@@ -190,10 +180,11 @@ public abstract class ListGenericFragment extends ListFragment {
 				.setText(pageTextFormat.format(getPageCalendar().getTime()));
 	}
 
-	public void seeAll() {
-		this.seeAll = true;
-		this.updateDataFromTimes();
-		this.updatePageText();
-		this.updateListFromData();
+	/**
+	 * 将数据库中属于该type的time对象取出， 保存在times列表中。
+	 */
+	private void updateTimesFromDatabase() {
+		DBMgr dbm = DBMgr.getInstance(getActivity());
+		this.times = dbm.getListByType(this.type);
 	}
 }

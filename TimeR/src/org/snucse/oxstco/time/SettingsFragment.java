@@ -41,13 +41,13 @@ public class SettingsFragment extends PreferenceFragment implements
 					"fuck");
 			int iDay = Integer.parseInt(firstDay);
 			
-			//View v = getView();
-			//ListGenericFragment g = ((ListGenericFragment)v.findViewById(R.id.fragment_today));
-			//this.tempCalendar.setFirstDayOfWeek(iDay);
+			MainActivity.activity.getPageCalendar().setFirstDayOfWeek(iDay);
+			ListGenericFragment.tempCalendar.setFirstDayOfWeek(iDay);
 			
 			/*
-			 * 目标：
-			 * 这里只要找到一个act或者frag，全能找到
+			 * 下一个目标：
+			 * 1.优化ListGenericFrag中的update系列方法
+			 * 2.实现更改本配置后返回时即时更新列表
 			 */
 		}
 	}

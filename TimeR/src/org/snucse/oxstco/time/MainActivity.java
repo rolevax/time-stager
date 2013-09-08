@@ -24,6 +24,12 @@ public class MainActivity extends FragmentActivity {
 	public static final int REQUEST_ADD = 422;
 	private Calendar pageCalendar ;
 
+	/**
+	 * 在onCreate方法中被初始化为当前对象，
+	 * 使得其他类中可直接通过该静态引用获得该MainActivity。
+	 */
+	public static MainActivity activity ;
+	
 	public Calendar getPageCalendar() {
 		return pageCalendar;
 	}
@@ -34,6 +40,8 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		MainActivity.activity = this ;
 		
 		this.pageCalendar = Calendar.getInstance();
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
