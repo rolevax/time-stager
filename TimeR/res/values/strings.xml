@@ -14,12 +14,15 @@
     <string name="button_next">&gt;</string>
     <string name="button_return">return</string>
     <string name="button_add">+</string>
+    <string name="button_confirm">OK</string>
     <string name="title_activity_add">AddActivity</string>
     <string name="add_subject">subject:</string>
     <string name="add_type">type:</string>
     <string name="add_datetime">datetime:</string>
     <string name="button_all">see all</string>
     <string name="action_about">about</string>
+    <string name="about_title">关于作者</string>
+    <string name="about_content">作者是个大好人\n老好了</string>
 
     <string-array name="type_array">
         <item>day</item>

@@ -5,8 +5,13 @@ import java.util.Calendar;
 
 import org.snucse.oxstco.time.business.Time;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
@@ -22,14 +27,13 @@ import android.widget.TabHost.OnTabChangeListener;
 public class MainActivity extends FragmentActivity {
 	private TabHost tabHost;
 	public static final int REQUEST_ADD = 422;
-	private Calendar pageCalendar ;
+	private Calendar pageCalendar;
 
 	/**
-	 * 在onCreate方法中被初始化为当前对象，
-	 * 使得其他类中可直接通过该静态引用获得该MainActivity。
+	 * 在onCreate方法中被初始化为当前对象， 使得其他类中可直接通过该静态引用获得该MainActivity。
 	 */
-	public static MainActivity activity ;
-	
+	public static MainActivity activity;
+
 	public Calendar getPageCalendar() {
 		return pageCalendar;
 	}
@@ -40,14 +44,15 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		MainActivity.activity = this ;
-		
+
+		MainActivity.activity = this;
+
 		this.pageCalendar = Calendar.getInstance();
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(this);
 		String firstDay = sharedPref.getString("pref_firstDayOfWeek", "fuck");
 		this.pageCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
-		
+
 		setContentView(R.layout.activity_main);
 
 		tabHost = (TabHost) findViewById(android.R.id.tabhost);
@@ -85,6 +90,7 @@ public class MainActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_about:
+			this.dialog();
 			return true;
 		case R.id.action_settings:
 			Intent i = new Intent(this, SettingsActivity.class);
@@ -95,20 +101,35 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
+	protected void dialog() {
+		AlertDialog.Builder builder = new Builder(MainActivity.this);
+		Resources r = this.getResources();
+		builder.setMessage(r.getString(R.string.about_content));
+		builder.setTitle(r.getString(R.string.about_title));
+		builder.setPositiveButton(r.getString(R.string.button_confirm), new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		builder.create().show() ;
+	}
+
 	private void getOverflowMenu() {
 
-	     try {
-	        ViewConfiguration config = ViewConfiguration.get(this);
-	        Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-	        if(menuKeyField != null) {
-	            menuKeyField.setAccessible(true);
-	            menuKeyField.setBoolean(config, false);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace(); 
-	    }
+		try {
+			ViewConfiguration config = ViewConfiguration.get(this);
+			Field menuKeyField = ViewConfiguration.class
+					.getDeclaredField("sHasPermanentMenuKey");
+			if (menuKeyField != null) {
+				menuKeyField.setAccessible(true);
+				menuKeyField.setBoolean(config, false);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	// on click method of the add button
 	public void add(View v) {
 		int type = tabHost.getCurrentTab() + 1;
