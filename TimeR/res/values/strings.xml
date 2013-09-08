@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Rhythm of Life</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">你妹的</string>
+    <string name="last">go to Last</string>
+    <string name="first">go to First</string>
+    <string name="tab_today">today</string>
+    <string name="tab_week">week</string>
+    <string name="tab_month">month</string>
+    <string name="tab_year">year</string>
+    <string name="button_prev">&lt;</string>
+    <string name="button_next">&gt;</string>
+    <string name="button_return">return</string>
+    <string name="button_add">+</string>
+    <string name="title_activity_add">AddActivity</string>
+    <string name="add_subject">subject:</string>
+    <string name="add_type">type:</string>
+    <string name="add_datetime">datetime:</string>
+    <string name="button_all">see all</string>
+    <string name="action_about">about</string>
+
+    <string-array name="type_array">
+        <item>day</item>
+        <item>week</item>
+        <item>month</item>
+        <item>year</item>
+    </string-array>
+    
+    <string-array name="weekday_array">
+        <item>Monday</item>
+        <item>Sunday</item>
+    </string-array>
+
+    <string-array name="weekday_value_array">
+        <item>2</item>
+        <item>1</item>
+    </string-array>
+    
+    <string name="title_activity_week_add">WeekAddActivity</string>
+    <string name="pref_firstDayOfWeek">Change first day of week...</string>
+
+</resources>
