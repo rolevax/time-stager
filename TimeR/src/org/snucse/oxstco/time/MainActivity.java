@@ -38,9 +38,6 @@ public class MainActivity extends FragmentActivity {
 		return pageCalendar;
 	}
 
-	/*
-	 * 未来功能： 设置每周第一天
-	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

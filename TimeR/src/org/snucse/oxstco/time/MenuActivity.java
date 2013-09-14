@@ -1,11 +1,8 @@
 package org.snucse.oxstco.time;
 
-import org.snucse.oxstco.time.business.Time;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
