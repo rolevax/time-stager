@@ -167,9 +167,8 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 		this.updateDatetimeText();
 	}
 	
-	private void updateDatetimeText() {
-		String formatString = Time.getFormatByType(this.time.type, false);
-		SimpleDateFormat format = new SimpleDateFormat(formatString);
+	private void updateDatetimeText() { 
+		SimpleDateFormat format = Time.getFormatByType(this.time.type, false);
 		// 为避免琐碎重复，time对象中的timestamp在结束时统一更新，所以这里使用calendar中的时间。
 		this.addDatetime.setText(format.format(this.calendar.getTime()));
 	}

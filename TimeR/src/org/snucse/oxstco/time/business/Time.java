@@ -2,17 +2,38 @@ package org.snucse.oxstco.time.business;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import org.snucse.oxstco.time.ListGenericFragment;
 
-import android.util.Log;
+import android.annotation.SuppressLint;
 
+@SuppressLint("SimpleDateFormat")
 public class Time implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public int id, type;
 	public String subject;
 	public Timestamp datetime;
 
+	private static SimpleDateFormat hourFormat = 
+			new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	private static SimpleDateFormat dayFormat =
+			new SimpleDateFormat("yyyy-MM-dd");
+	private static SimpleDateFormat monthFormat=
+			new SimpleDateFormat("yyyy-MM");
+	private static SimpleDateFormat weekFormat=
+			new SimpleDateFormat("yyyy-ww");
+	private static SimpleDateFormat yearFormat=
+			new SimpleDateFormat("yyyy");
+	
+	static { 
+		hourFormat.setCalendar(ListGenericFragment.getTempCalendar());
+		dayFormat.setCalendar(ListGenericFragment.getTempCalendar());
+		weekFormat.setCalendar(ListGenericFragment.getTempCalendar());
+		monthFormat.setCalendar(ListGenericFragment.getTempCalendar());
+		yearFormat.setCalendar(ListGenericFragment.getTempCalendar());
+	}
+	
 	public Time() {
 		this.datetime = new Timestamp(System.currentTimeMillis());
 	}
@@ -32,29 +53,22 @@ public class Time implements Serializable {
 		this.datetime = datetime;
 	}
 
-	public static String getFormatByType(int type, boolean forTitle) {
-		String formatString = null;
+	public static SimpleDateFormat getFormatByType(int type, boolean forTitle) {
 		switch (type) {
 		case ListGenericFragment.TODAY:
 			if (forTitle) {
-				formatString = "yyyy-MM-dd";
+				return dayFormat ;
 			} else {
-				formatString = "yyyy-MM-dd HH:mm";
+				return hourFormat;
 			}
-			break;
 		case ListGenericFragment.WEEK:
-			formatString = "yyyy-ww";
-			break;
+			return weekFormat;
 		case ListGenericFragment.MONTH:
-			formatString = "yyyy-MM";
-			break;
+			return monthFormat;
 		case ListGenericFragment.YEAR:
-			formatString = "yyyy";
-			break;
+			return yearFormat;
 		default:
-			Log.w("time", "我草");
-			break;
+			return null;
 		}
-		return formatString;
 	}
 }

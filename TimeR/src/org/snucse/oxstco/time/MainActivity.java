@@ -27,14 +27,14 @@ import android.widget.TabHost.OnTabChangeListener;
 public class MainActivity extends FragmentActivity {
 	private TabHost tabHost;
 	public static final int REQUEST_ADD = 422;
-	private Calendar pageCalendar;
+	private static Calendar pageCalendar = null;
 
 	/**
 	 * 在onCreate方法中被初始化为当前对象， 使得其他类中可直接通过该静态引用获得该MainActivity。
 	 */
 	public static MainActivity activity;
 
-	public Calendar getPageCalendar() {
+	public static Calendar getPageCalendar() {
 		return pageCalendar;
 	}
 
@@ -44,11 +44,17 @@ public class MainActivity extends FragmentActivity {
 
 		MainActivity.activity = this;
 
-		this.pageCalendar = Calendar.getInstance();
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		String firstDay = sharedPref.getString("pref_firstDayOfWeek", "fuck");
-		this.pageCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
+		if (pageCalendar == null) {
+			pageCalendar = Calendar.getInstance();
+			SharedPreferences sharedPref = PreferenceManager
+					.getDefaultSharedPreferences(this);
+			String firstDay = sharedPref.getString("pref_firstDayOfWeek",
+					"fuck");
+			pageCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
+			//改动每周第一天后，变动一下当前时间以刷新当前周数。
+			pageCalendar.roll(Calendar.DAY_OF_MONTH, true);
+			pageCalendar.roll(Calendar.DAY_OF_MONTH, false);
+		}
 
 		setContentView(R.layout.activity_main);
 
@@ -103,13 +109,14 @@ public class MainActivity extends FragmentActivity {
 		Resources r = this.getResources();
 		builder.setMessage(r.getString(R.string.about_content));
 		builder.setTitle(r.getString(R.string.about_title));
-		builder.setPositiveButton(r.getString(R.string.button_confirm), new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-		builder.create().show() ;
+		builder.setPositiveButton(r.getString(R.string.button_confirm),
+				new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		builder.create().show();
 	}
 
 	private void getOverflowMenu() {
@@ -144,7 +151,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void returnToNow(View v) {
-		this.pageCalendar.setTimeInMillis(System.currentTimeMillis());
+		pageCalendar.setTimeInMillis(System.currentTimeMillis());
 		this.getCurrentFragment().onMovingPage(0);
 	}
 
@@ -155,11 +162,14 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.i("main act", "on res act, code=" + resultCode);
+		ListGenericFragment mlf;
+		Time time;
 		switch (resultCode) {
 		case MenuActivity.RESULT_DELETE:
-			Time time = (Time) data.getSerializableExtra("time");
-			ListGenericFragment mlf = getCurrentFragment();
-			mlf.delete(time);
+			/*
+			 * Time time = (Time) data.getSerializableExtra("time");
+			 * ListGenericFragment mlf = getCurrentFragment(); mlf.delete(time);
+			 */
 			break;
 		case AddActivity.RESULT_ADD:
 			time = (Time) data.getSerializableExtra("time");

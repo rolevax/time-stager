@@ -22,6 +22,6 @@ public class ListWeekFragment extends ListGenericFragment {
 		int currYear = getPageCalendar().get(Calendar.YEAR);
 		
 		return (timeWeek==currWeek) && (timeYear==currYear);
-	}
+	} 
 
 }

@@ -27,5 +27,5 @@ public class ListTodayFragment extends ListGenericFragment {
 		return (timeMonth == currentPageMonth) && 
 				(timeYear == currentPageYear) &&
 				(timeDay == currentPageDay);
-	}
+	} 
 }

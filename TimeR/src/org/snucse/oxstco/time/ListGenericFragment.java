@@ -1,6 +1,5 @@
 package org.snucse.oxstco.time;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,23 +11,28 @@ import org.snucse.oxstco.time.business.DBMgr;
 import org.snucse.oxstco.time.business.Time;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-@SuppressLint("SimpleDateFormat") //国际化时应解决此问题
+@SuppressLint("SimpleDateFormat")
+// 国际化时应解决此问题
 public abstract class ListGenericFragment extends ListFragment {
 
 	protected static Calendar tempCalendar = null;
+	protected static final int MENU_EDIT = 401, MENU_DELETE = 402;
 	public static final int TODAY = 1, WEEK = 2, MONTH = 3, YEAR = 4;
 	private TextView pageTextView;
 	// 屏幕列表中显示项的列表。
@@ -60,11 +64,53 @@ public abstract class ListGenericFragment extends ListFragment {
 		this.updateListFromDatabase();
 		this.updatePageText();
 	}
-
+	
+	private void delete(int position) {
+		Time toDel = (Time)data.get(position).get("time");
+		this.delete(toDel);
+	}
+	
 	protected abstract boolean filterTime(Time t);
 
-	protected Calendar getPageCalendar() {
-		return ((MainActivity) getActivity()).getPageCalendar();
+	protected static Calendar getPageCalendar() {
+		return MainActivity.getPageCalendar();
+	}
+	
+	public static Calendar getTempCalendar() {
+		return ListGenericFragment.tempCalendar ;
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(0, MENU_EDIT, 1, "Edit");
+		menu.add(0, MENU_DELETE, 0, "Delete");
+		Log.i("xxx","outside type= "+this.type);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+				.getMenuInfo();
+		/* 这个万恶的方法，并不真正属于任何Fragment，
+		 * 而是属于Activity的。这个方法根本不关心是哪个
+		 * Fragment在调用它，因为他只为Activity服务
+		 * 至于Fragment里的this指针究竟指谁，它根本不在乎
+		 * 因此，只能用这个realThis指针去代替this发挥作用了。
+		 */
+		ListGenericFragment realThis = MainActivity.activity.getCurrentFragment();
+		switch (item.getItemId()) {
+		case ListGenericFragment.MENU_DELETE: 
+			Log.i("xxx","inside type= "+realThis.type);
+			Log.i("xxx","inside pos= "+info.position);
+			realThis.delete(info.position);
+			return true;
+		case ListGenericFragment.MENU_EDIT:
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
 	}
 
 	@Override
@@ -80,17 +126,17 @@ public abstract class ListGenericFragment extends ListFragment {
 			tempCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
 		}
 
-		this.pageTextFormat = new SimpleDateFormat(Time.getFormatByType(
-				this.type, true));
-		this.listTextFormat = new SimpleDateFormat(Time.getFormatByType(
-				this.type, false));
+		this.pageTextFormat = Time.getFormatByType(
+				this.type, true);
+		this.listTextFormat = Time.getFormatByType(
+				this.type, false);
 
 		this.updateTimesFromDatabase();
 		this.updateDataFromTimes();
 		SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), data,
 				R.layout.vlist, new String[] { "text_subject", "img_type" },
 				new int[] { R.id.text_subject, R.id.img_type });
-		setListAdapter(simpleAdapter);
+		setListAdapter(simpleAdapter); 
 	}
 
 	@Override
@@ -101,16 +147,23 @@ public abstract class ListGenericFragment extends ListFragment {
 		return v;
 	}
 
+	/*
+	 * 先把原先苹果菜单中的功能全实现了， 再把长按触发改成单击触发
+	 */
+
 	public void onListItemClick(ListView parent, View v, int position, long id) {
-		Intent intent = new Intent(getActivity(), MenuActivity.class);
-		intent.putExtra("time", (Serializable) data.get(position).get("time"));
-		intent.putExtra("type", type);
-		getActivity().startActivityForResult(intent, 0);
+		Log.i("lgf", "click data size " + data.size());
+		/*
+		 * Intent intent = new Intent(getActivity(), MenuActivity.class);
+		 * intent.putExtra("time", (Serializable)
+		 * data.get(position).get("time")); intent.putExtra("type", type);
+		 * getActivity().startActivityForResult(intent, 0);
+		 */
 	}
 
 	protected void onMovingPage(int direction) {
 		this.seeAll = false;
-		this.getPageCalendar().add(this.pageStep, direction);
+		ListGenericFragment.getPageCalendar().add(this.pageStep, direction);
 		this.updateListFromTimes();
 	}
 
@@ -122,6 +175,7 @@ public abstract class ListGenericFragment extends ListFragment {
 			Log.i("mlf", "一个时有时无的错误：current为空引用");
 		}
 		this.updateListFromTimes();
+		this.registerForContextMenu(this.getListView());
 	}
 
 	public void seeAll() {
@@ -137,8 +191,7 @@ public abstract class ListGenericFragment extends ListFragment {
 	}
 
 	/**
-	 * 从数据库中取出列表三部曲之第二步，</br>
-	 * 将Times列表中符合当前页的项目放到待显示的data列表中。
+	 * 从数据库中取出列表三部曲之第二步，</br> 将Times列表中符合当前页的项目放到待显示的data列表中。
 	 */
 	private void updateDataFromTimes() {
 		if (this.data == null) {
@@ -159,9 +212,7 @@ public abstract class ListGenericFragment extends ListFragment {
 	}
 
 	/**
-	 * 从数据库中取出列表三部曲之第三步，</br>
-	 * 提醒data列表已被更改，使其刷新,</br>
-	 * 并更新指示框中的显示时间。
+	 * 从数据库中取出列表三部曲之第三步，</br> 提醒data列表已被更改，使其刷新,</br> 并更新指示框中的显示时间。
 	 */
 	private void updateListFromData() {
 		// 只有在data仍指向原来的对象时才起作用
@@ -170,21 +221,17 @@ public abstract class ListGenericFragment extends ListFragment {
 	}
 
 	/**
-	 * 从数据库中取出列表三部曲三合一版，</br>
-	 * 从数据库从拿数据，并刷新当前页列表。
+	 * 从数据库中取出列表三部曲三合一版，</br> 从数据库从拿数据，并刷新当前页列表。
 	 */
 	protected void updateListFromDatabase() {
 		this.updateTimesFromDatabase();
 		this.updateDataFromTimes();
 		this.updateListFromData();
 	}
-	
+
 	/**
-	 * 通过重新过滤times列表，改变当前页显示内容。</br>
-	 * 翻页、切换标签，或配置变动时调用。</br>
-	 * 要不是当Fragment显示出来是并不会</br>
-	 * 调用onResume方法，才不用这么费劲地</br>
-	 * 把这个方法可哪儿都调一下呢。
+	 * 通过重新过滤times列表，改变当前页显示内容。</br> 翻页、切换标签，或配置变动时调用。</br>
+	 * 要不是当Fragment显示出来是并不会</br> 调用onResume方法，才不用这么费劲地</br> 把这个方法可哪儿都调一下呢。
 	 */
 	public void updateListFromTimes() {
 		this.updateDataFromTimes();
@@ -196,14 +243,13 @@ public abstract class ListGenericFragment extends ListFragment {
 			this.pageTextView.setText("All");
 			return;
 		}
-
-		this.pageTextView
-				.setText(pageTextFormat.format(getPageCalendar().getTime()));
+		
+		String pageTextString = pageTextFormat.format(getPageCalendar().getTime());
+		this.pageTextView.setText(pageTextString);
 	}
 
 	/**
-	 * 从数据库中获取列表三部曲中第一步，</br>
-	 * 将数据库中属于该type的time对象取出， 保存在times列表中。
+	 * 从数据库中获取列表三部曲中第一步，</br> 将数据库中属于该type的time对象取出， 保存在times列表中。
 	 */
 	private void updateTimesFromDatabase() {
 		DBMgr dbm = DBMgr.getInstance(getActivity());

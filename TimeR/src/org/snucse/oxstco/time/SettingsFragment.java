@@ -1,5 +1,7 @@
 package org.snucse.oxstco.time;
 
+import java.util.Calendar;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -40,8 +42,13 @@ public class SettingsFragment extends PreferenceFragment implements
 					"fuck");
 			int iDay = Integer.parseInt(firstDay);
 			
-			MainActivity.activity.getPageCalendar().setFirstDayOfWeek(iDay);
+			MainActivity.getPageCalendar().setFirstDayOfWeek(iDay);
+			//更改每周第一天后，需动一下日期以更新当前周数。
+			MainActivity.getPageCalendar().roll(Calendar.DAY_OF_MONTH, true);
+			MainActivity.getPageCalendar().roll(Calendar.DAY_OF_MONTH, false);
 			ListGenericFragment.tempCalendar.setFirstDayOfWeek(iDay);
+			ListGenericFragment.tempCalendar.roll(Calendar.DAY_OF_MONTH, true);
+			ListGenericFragment.tempCalendar.roll(Calendar.DAY_OF_MONTH, false);
 			
 			MainActivity.activity.getCurrentFragment().updateListFromTimes();
 		}
