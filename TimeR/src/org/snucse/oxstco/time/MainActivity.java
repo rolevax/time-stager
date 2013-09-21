@@ -166,10 +166,6 @@ public class MainActivity extends FragmentActivity {
 		Time time;
 		switch (resultCode) {
 		case MenuActivity.RESULT_DELETE:
-			/*
-			 * Time time = (Time) data.getSerializableExtra("time");
-			 * ListGenericFragment mlf = getCurrentFragment(); mlf.delete(time);
-			 */
 			break;
 		case AddActivity.RESULT_ADD:
 			time = (Time) data.getSerializableExtra("time");

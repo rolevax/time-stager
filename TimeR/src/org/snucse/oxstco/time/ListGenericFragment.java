@@ -1,5 +1,6 @@
 package org.snucse.oxstco.time;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,6 +12,7 @@ import org.snucse.oxstco.time.business.DBMgr;
 import org.snucse.oxstco.time.business.Time;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -32,7 +34,8 @@ import android.widget.TextView;
 public abstract class ListGenericFragment extends ListFragment {
 
 	protected static Calendar tempCalendar = null;
-	protected static final int MENU_EDIT = 401, MENU_DELETE = 402;
+	protected static final int MENU_EDIT = 401, MENU_DELETE = 402,
+			REQUEST_EDIT = 403;
 	public static final int TODAY = 1, WEEK = 2, MONTH = 3, YEAR = 4;
 	private TextView pageTextView;
 	// 屏幕列表中显示项的列表。
@@ -64,20 +67,20 @@ public abstract class ListGenericFragment extends ListFragment {
 		this.updateListFromDatabase();
 		this.updatePageText();
 	}
-	
+
 	private void delete(int position) {
-		Time toDel = (Time)data.get(position).get("time");
+		Time toDel = (Time) data.get(position).get("time");
 		this.delete(toDel);
 	}
-	
+
 	protected abstract boolean filterTime(Time t);
 
 	protected static Calendar getPageCalendar() {
 		return MainActivity.getPageCalendar();
 	}
-	
+
 	public static Calendar getTempCalendar() {
-		return ListGenericFragment.tempCalendar ;
+		return ListGenericFragment.tempCalendar;
 	}
 
 	@Override
@@ -86,27 +89,29 @@ public abstract class ListGenericFragment extends ListFragment {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.add(0, MENU_EDIT, 1, "Edit");
 		menu.add(0, MENU_DELETE, 0, "Delete");
-		Log.i("xxx","outside type= "+this.type);
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
-		/* 这个万恶的方法，并不真正属于任何Fragment，
-		 * 而是属于Activity的。这个方法根本不关心是哪个
-		 * Fragment在调用它，因为他只为Activity服务
-		 * 至于Fragment里的this指针究竟指谁，它根本不在乎
+		/*
+		 * 这个万恶的方法，并不真正属于任何Fragment， 而是属于Activity的。这个方法根本不关心是哪个
+		 * Fragment在调用它，因为他只为Activity服务 至于Fragment里的this指针究竟指谁，它根本不在乎
 		 * 因此，只能用这个realThis指针去代替this发挥作用了。
 		 */
-		ListGenericFragment realThis = MainActivity.activity.getCurrentFragment();
+		ListGenericFragment realThis = MainActivity.activity
+				.getCurrentFragment();
+		Intent intent = new Intent(MainActivity.activity, AddActivity.class);
 		switch (item.getItemId()) {
-		case ListGenericFragment.MENU_DELETE: 
-			Log.i("xxx","inside type= "+realThis.type);
-			Log.i("xxx","inside pos= "+info.position);
+		case ListGenericFragment.MENU_DELETE:
 			realThis.delete(info.position);
 			return true;
 		case ListGenericFragment.MENU_EDIT:
+			intent.putExtra("time",
+					(Serializable) realThis.data.get(info.position).get("time"));
+			intent.putExtra("type", realThis.type);
+			MainActivity.activity.startActivityForResult(intent, REQUEST_EDIT);
 			return true;
 		default:
 			return super.onContextItemSelected(item);
@@ -126,17 +131,15 @@ public abstract class ListGenericFragment extends ListFragment {
 			tempCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
 		}
 
-		this.pageTextFormat = Time.getFormatByType(
-				this.type, true);
-		this.listTextFormat = Time.getFormatByType(
-				this.type, false);
+		this.pageTextFormat = Time.getFormatByType(this.type, true);
+		this.listTextFormat = Time.getFormatByType(this.type, false);
 
 		this.updateTimesFromDatabase();
 		this.updateDataFromTimes();
 		SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), data,
 				R.layout.vlist, new String[] { "text_subject", "img_type" },
 				new int[] { R.id.text_subject, R.id.img_type });
-		setListAdapter(simpleAdapter); 
+		setListAdapter(simpleAdapter);
 	}
 
 	@Override
@@ -148,17 +151,11 @@ public abstract class ListGenericFragment extends ListFragment {
 	}
 
 	/*
-	 * 先把原先苹果菜单中的功能全实现了， 再把长按触发改成单击触发
+	 * 下一个目标：实现“安排”菜单项。
 	 */
 
 	public void onListItemClick(ListView parent, View v, int position, long id) {
-		Log.i("lgf", "click data size " + data.size());
-		/*
-		 * Intent intent = new Intent(getActivity(), MenuActivity.class);
-		 * intent.putExtra("time", (Serializable)
-		 * data.get(position).get("time")); intent.putExtra("type", type);
-		 * getActivity().startActivityForResult(intent, 0);
-		 */
+		this.getActivity().openContextMenu(v);
 	}
 
 	protected void onMovingPage(int direction) {
@@ -243,8 +240,9 @@ public abstract class ListGenericFragment extends ListFragment {
 			this.pageTextView.setText("All");
 			return;
 		}
-		
-		String pageTextString = pageTextFormat.format(getPageCalendar().getTime());
+
+		String pageTextString = pageTextFormat.format(getPageCalendar()
+				.getTime());
 		this.pageTextView.setText(pageTextString);
 	}
 

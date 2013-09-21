@@ -110,7 +110,7 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 		this.typeSpinner.setSelection(intType - 1);
 
 		this.request = intent.getIntExtra("requestCode", -1);
-		if (this.request == MenuActivity.REQUEST_EDIT) {
+		if (this.request == ListGenericFragment.REQUEST_EDIT) {
 			time = (Time) intent.getSerializableExtra("time");
 			this.addSubject.setText(time.subject);
 		} else if (this.request == MainActivity.REQUEST_ADD) {
@@ -147,7 +147,7 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 		case MainActivity.REQUEST_ADD:
 			this.setResult(AddActivity.RESULT_ADD, data);
 			break;
-		case MenuActivity.REQUEST_EDIT:
+		case ListGenericFragment.REQUEST_EDIT:
 			this.setResult(AddActivity.RESULT_EDIT, data);
 			break;
 		}
