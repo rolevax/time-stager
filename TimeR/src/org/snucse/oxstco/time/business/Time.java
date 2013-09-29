@@ -22,7 +22,7 @@ public class Time implements Serializable {
 	private static SimpleDateFormat monthFormat=
 			new SimpleDateFormat("yyyy-MM");
 	private static SimpleDateFormat weekFormat=
-			new SimpleDateFormat("yyyy-ww");
+			new SimpleDateFormat("yyyy-ww周");
 	private static SimpleDateFormat yearFormat=
 			new SimpleDateFormat("yyyy");
 	

@@ -192,11 +192,12 @@ public abstract class ListGenericFragment extends ListFragment {
 	}
 
 	/*
-	 * 全面汉化（或实现双语言）
+	 * 暂时只支持中文，以后实现多语言，并修改所有的hard-code.
 	 * 下一个目标：设置picker界限，不能安排到过去。
 	 * 
 	 *  远期目标：Time对象可具有deadline属性，自带提醒，制约推迟。
 	 *  (详情参考最初设计笔记)
+	 *  添加对过期未完成项目的一系列处理(可设置自动删除，可查看)
 	 */
 
 	public void onListItemClick(ListView parent, View v, int position, long id) {
