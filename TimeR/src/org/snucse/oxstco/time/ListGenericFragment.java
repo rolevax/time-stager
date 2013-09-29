@@ -35,7 +35,9 @@ public abstract class ListGenericFragment extends ListFragment {
 
 	protected static Calendar tempCalendar = null;
 	protected static final int MENU_EDIT = 401, MENU_DELETE = 402,
-			REQUEST_EDIT = 403;
+			REQUEST_EDIT = 403, MENU_TO_DAY = 404,
+			MENU_TO_WEEK = 405, MENU_TO_MONTH = 406,
+			MENU_TO_YEAR = 407 ;
 	public static final int TODAY = 1, WEEK = 2, MONTH = 3, YEAR = 4;
 	private TextView pageTextView;
 	// 屏幕列表中显示项的列表。
@@ -87,8 +89,21 @@ public abstract class ListGenericFragment extends ListFragment {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.add(0, MENU_EDIT, 1, "Edit");
-		menu.add(0, MENU_DELETE, 0, "Delete");
+		//menu.add(0, MENU_EDIT, 2, "Edit");
+		menu.add(0, MENU_DELETE, 0, "完成／撤销");
+		menu.add(1, MENU_EDIT, 1, "提前／推迟");
+		if (this.type > ListGenericFragment.TODAY) {
+			menu.add(1, MENU_TO_DAY, 5, "安排到某日");
+		}
+		if (this.type > ListGenericFragment.WEEK) {
+			menu.add(1, MENU_TO_WEEK, 4, "安排到某周");
+		}
+		if (this.type > ListGenericFragment.MONTH) {
+			menu.add(1, MENU_TO_MONTH, 3, "安排到某月");
+		}
+		if (this.type > ListGenericFragment.YEAR) {
+			menu.add(1, MENU_TO_YEAR, 2, "安排到某年");
+		}
 	}
 
 	@Override
@@ -103,9 +118,35 @@ public abstract class ListGenericFragment extends ListFragment {
 		ListGenericFragment realThis = MainActivity.activity
 				.getCurrentFragment();
 		Intent intent = new Intent(MainActivity.activity, AddActivity.class);
+		
+		//一下有待优化，太恶心了。
 		switch (item.getItemId()) {
 		case ListGenericFragment.MENU_DELETE:
 			realThis.delete(info.position);
+			return true;
+		case ListGenericFragment.MENU_TO_DAY:
+			intent.putExtra("time",
+					(Serializable) realThis.data.get(info.position).get("time"));
+			intent.putExtra("type", ListGenericFragment.TODAY);
+			MainActivity.activity.startActivityForResult(intent, REQUEST_EDIT);
+			return true;
+		case ListGenericFragment.MENU_TO_WEEK:
+			intent.putExtra("time",
+					(Serializable) realThis.data.get(info.position).get("time"));
+			intent.putExtra("type", ListGenericFragment.WEEK);
+			MainActivity.activity.startActivityForResult(intent, REQUEST_EDIT);
+			return true;
+		case ListGenericFragment.MENU_TO_MONTH:
+			intent.putExtra("time",
+					(Serializable) realThis.data.get(info.position).get("time"));
+			intent.putExtra("type", ListGenericFragment.MONTH);
+			MainActivity.activity.startActivityForResult(intent, REQUEST_EDIT);
+			return true;
+		case ListGenericFragment.MENU_TO_YEAR:
+			intent.putExtra("time",
+					(Serializable) realThis.data.get(info.position).get("time"));
+			intent.putExtra("type", ListGenericFragment.YEAR);
+			MainActivity.activity.startActivityForResult(intent, REQUEST_EDIT);
 			return true;
 		case ListGenericFragment.MENU_EDIT:
 			intent.putExtra("time",
@@ -151,7 +192,11 @@ public abstract class ListGenericFragment extends ListFragment {
 	}
 
 	/*
-	 * 下一个目标：实现“安排”菜单项。
+	 * 全面汉化（或实现双语言）
+	 * 下一个目标：设置picker界限，不能安排到过去。
+	 * 
+	 *  远期目标：Time对象可具有deadline属性，自带提醒，制约推迟。
+	 *  (详情参考最初设计笔记)
 	 */
 
 	public void onListItemClick(ListView parent, View v, int position, long id) {
