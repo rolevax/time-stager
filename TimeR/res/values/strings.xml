@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">阶段计划</string>
+    <string name="app_name">日理万机</string>
     <string name="action_settings">选项</string>
     <string name="hello_world">嘿嘿</string>
     <string name="last">go to Last</string>
@@ -25,10 +25,10 @@
     <string name="about_content">作者是个大好人\n老好了</string>
 
     <string-array name="type_array">
-        <item>day</item>
-        <item>week</item>
-        <item>month</item>
-        <item>year</item>
+        <item>日计划</item>
+        <item>周计划</item>
+        <item>月计划</item>
+        <item>年计划</item>
     </string-array>
     
     <string-array name="weekday_array">
