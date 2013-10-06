@@ -51,7 +51,7 @@ public class MainActivity extends FragmentActivity {
 			String firstDay = sharedPref.getString("pref_firstDayOfWeek",
 					"fuck");
 			pageCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
-			//改动每周第一天后，变动一下当前时间以刷新当前周数。
+			// 改动每周第一天后，变动一下当前时间以刷新当前周数。
 			pageCalendar.roll(Calendar.DAY_OF_MONTH, true);
 			pageCalendar.roll(Calendar.DAY_OF_MONTH, false);
 		}
@@ -93,7 +93,10 @@ public class MainActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_about:
-			this.dialog();
+			this.dialog(R.id.action_about);
+			return true;
+		case R.id.action_next:
+			this.dialog(R.id.action_next);
 			return true;
 		case R.id.action_settings:
 			Intent i = new Intent(this, SettingsActivity.class);
@@ -104,11 +107,19 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-	protected void dialog() {
+	protected void dialog(int id) {
 		AlertDialog.Builder builder = new Builder(MainActivity.this);
 		Resources r = this.getResources();
-		builder.setMessage(r.getString(R.string.about_content));
-		builder.setTitle(r.getString(R.string.about_title));
+		switch (id) {
+		case R.id.action_about:
+			builder.setMessage(r.getString(R.string.about_content));
+			builder.setTitle(r.getString(R.string.about_title));
+			break;
+		case R.id.action_next:
+			builder.setMessage(r.getString(R.string.next_content));
+			builder.setTitle(r.getString(R.string.next_title));
+			break;
+		}
 		builder.setPositiveButton(r.getString(R.string.button_confirm),
 				new OnClickListener() {
 					@Override
