@@ -76,17 +76,6 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 
 		this.findViews();
 
-		this.yearPickerInWeek.setMinValue(2013);
-		this.yearPickerInWeek.setMaxValue(2093);
-		this.yearPickerInYear.setMinValue(2013);
-		this.yearPickerInYear.setMaxValue(2093);
-		this.yearPickerInMonth.setMinValue(2013);
-		this.yearPickerInMonth.setMaxValue(2093);
-		this.weekPickerInWeek.setMinValue(1);
-		this.weekPickerInWeek.setMaxValue(53);
-		this.monthPickerInMonth.setMinValue(1);
-		this.monthPickerInMonth.setMaxValue(12);
-
 		this.yearPickerInWeek.setOnValueChangedListener(this);
 		this.weekPickerInWeek.setOnValueChangedListener(this);
 		this.yearPickerInYear.setOnValueChangedListener(this);
@@ -118,7 +107,8 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 			time.type = intType;
 		}
 
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(this);
 		String firstDay = sharedPref.getString("pref_firstDayOfWeek", "fuck");
 		calendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
 		calendar.setTime(this.time.datetime);
@@ -128,7 +118,49 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 				calendar.get(Calendar.DAY_OF_MONTH), this);
 		this.timePickerInToday.setOnTimeChangedListener(this);
 
+		this.initPickerBounds();
+
 		this.updateDatetimeText();
+	}
+
+	private void initPickerBounds() { 
+		Calendar now = ListGenericFragment.getTempCalendar();
+		now.setTimeInMillis(System.currentTimeMillis());
+		int year = now.get(Calendar.YEAR);
+		
+		this.yearPickerInWeek.setMinValue(year);
+		this.yearPickerInYear.setMinValue(year);
+		this.yearPickerInMonth.setMinValue(year);
+
+		this.yearPickerInWeek.setMaxValue(2093);
+		this.yearPickerInYear.setMaxValue(2093);
+		this.yearPickerInMonth.setMaxValue(2093);
+		this.weekPickerInWeek.setMaxValue(53);
+		this.monthPickerInMonth.setMaxValue(12);
+
+		updatePickerBounds();
+
+		// 减掉5000毫秒是为了确保该下限比现在时间老。
+		this.datePickerInToday.setMinDate(System.currentTimeMillis() - 5000);
+	}
+	
+	private void updatePickerBounds() {
+		Calendar now = ListGenericFragment.getTempCalendar();
+		now.setTimeInMillis(System.currentTimeMillis());
+		
+		int year = now.get(Calendar.YEAR);
+		int month = now.get(Calendar.MONTH) + 1;
+		int week = now.get(Calendar.WEEK_OF_YEAR);
+		
+		int pickedYear = this.calendar.get(Calendar.YEAR);
+		
+		if (pickedYear == year) {
+			this.weekPickerInWeek.setMinValue(week);
+			this.monthPickerInMonth.setMinValue(month);
+		} else {
+			this.weekPickerInWeek.setMinValue(1);
+			this.monthPickerInMonth.setMinValue(1);
+		}
 	}
 
 	@Override
@@ -166,8 +198,8 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 		this.calendar.set(year, month, day);
 		this.updateDatetimeText();
 	}
-	
-	private void updateDatetimeText() { 
+
+	private void updateDatetimeText() {
 		SimpleDateFormat format = Time.getFormatByType(this.time.type, false);
 		// 为避免琐碎重复，time对象中的timestamp在结束时统一更新，所以这里使用calendar中的时间。
 		this.addDatetime.setText(format.format(this.calendar.getTime()));
@@ -241,11 +273,13 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 		case R.id.picker_year_in_year:
 		case R.id.picker_year_in_month:
 			this.calendar.set(Calendar.YEAR, newVal);
+			this.updatePickerBounds();
 			break;
 		case R.id.picker_week_in_week:
 			this.calendar.set(Calendar.WEEK_OF_YEAR, newVal);
-			Log.i("add","spinner new value="+newVal);
-			Log.i("add","cal new week="+this.calendar.get(Calendar.WEEK_OF_YEAR));
+			Log.i("add", "spinner new value=" + newVal);
+			Log.i("add",
+					"cal new week=" + this.calendar.get(Calendar.WEEK_OF_YEAR));
 			break;
 		case R.id.picker_month_in_month:
 			this.calendar.set(Calendar.MONTH, newVal - 1);

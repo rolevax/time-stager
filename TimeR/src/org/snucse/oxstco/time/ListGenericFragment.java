@@ -193,7 +193,8 @@ public abstract class ListGenericFragment extends ListFragment {
 
 	/*
 	 * 暂时只支持中文，以后实现多语言，并修改所有的hard-code.
-	 * 下一个目标：设置picker界限，不能安排到过去。
+	 * 
+	 * bug: add 53周时会跳年。
 	 * 
 	 *  远期目标：Time对象可具有deadline属性，自带提醒，制约推迟。
 	 *  (详情参考最初设计笔记)
