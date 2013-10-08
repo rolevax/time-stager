@@ -139,8 +139,15 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 		/*
 		 * 翻页界面与此处需同时修改 问题： 2012-53 -> 2013-1 2013-52 -> 2013-1 -> 2014-2
 		 * 
-		 * 统一周的“周号“肯定相同，但”年号“不一定相同；
+		 * 同一周的“周号“肯定相同，但”年号“不一定相同；
+		 * (显示列表时，过滤条件为年号与周号皆相同，
+		 * 因此会导致一半的项目因年号不同而被砍掉）
+		 * 
 		 * ”周号“和”年号“都相同的周不一定是同一周
+		 * yyyy-ww 并不能映射到唯一的一个周，
+		 * 一个周也不能唯一地映射到一个yyyy-ww
+		 * 
+		 * 问题很纠结，以后再解决
 		 */
 		this.weekPickerInWeek.setMaxValue(53);
 		this.monthPickerInMonth.setMaxValue(12);
