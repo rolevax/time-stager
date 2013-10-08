@@ -98,20 +98,21 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 		// type从1开始，而下拉菜单中的pos从0开始，因此减1
 		this.typeSpinner.setSelection(intType - 1);
 
-		this.request = intent.getIntExtra("requestCode", -1);
-		if (this.request == ListGenericFragment.REQUEST_EDIT) {
-			time = (Time) intent.getSerializableExtra("time");
-			this.addSubject.setText(time.subject);
-		} else if (this.request == MainActivity.REQUEST_ADD) {
-			time = new Time();
-			time.type = intType;
-		}
-
 		SharedPreferences sharedPref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		String firstDay = sharedPref.getString("pref_firstDayOfWeek", "fuck");
 		calendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
-		calendar.setTime(this.time.datetime);
+
+		this.request = intent.getIntExtra("requestCode", -1);
+		if (this.request == ListGenericFragment.REQUEST_EDIT) {
+			time = (Time) intent.getSerializableExtra("time");
+			this.addSubject.setText(time.subject);
+			calendar.setTime(this.time.datetime);
+		} else if (this.request == MainActivity.REQUEST_ADD) {
+			time = new Time();
+			time.type = intType;
+			calendar = (Calendar)MainActivity.getPageCalendar().clone();
+		}
 
 		this.datePickerInToday.init(calendar.get(Calendar.YEAR),
 				calendar.get(Calendar.MONTH),
@@ -123,11 +124,11 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 		this.updateDatetimeText();
 	}
 
-	private void initPickerBounds() { 
+	private void initPickerBounds() {
 		Calendar now = ListGenericFragment.getTempCalendar();
 		now.setTimeInMillis(System.currentTimeMillis());
 		int year = now.get(Calendar.YEAR);
-		
+
 		this.yearPickerInWeek.setMinValue(year);
 		this.yearPickerInYear.setMinValue(year);
 		this.yearPickerInMonth.setMinValue(year);
@@ -135,6 +136,12 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 		this.yearPickerInWeek.setMaxValue(2093);
 		this.yearPickerInYear.setMaxValue(2093);
 		this.yearPickerInMonth.setMaxValue(2093);
+		/*
+		 * 翻页界面与此处需同时修改 问题： 2012-53 -> 2013-1 2013-52 -> 2013-1 -> 2014-2
+		 * 
+		 * 统一周的“周号“肯定相同，但”年号“不一定相同；
+		 * ”周号“和”年号“都相同的周不一定是同一周
+		 */
 		this.weekPickerInWeek.setMaxValue(53);
 		this.monthPickerInMonth.setMaxValue(12);
 
@@ -143,17 +150,17 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 		// 减掉5000毫秒是为了确保该下限比现在时间老。
 		this.datePickerInToday.setMinDate(System.currentTimeMillis() - 5000);
 	}
-	
+
 	private void updatePickerBounds() {
 		Calendar now = ListGenericFragment.getTempCalendar();
 		now.setTimeInMillis(System.currentTimeMillis());
-		
+
 		int year = now.get(Calendar.YEAR);
 		int month = now.get(Calendar.MONTH) + 1;
 		int week = now.get(Calendar.WEEK_OF_YEAR);
-		
+
 		int pickedYear = this.calendar.get(Calendar.YEAR);
-		
+
 		if (pickedYear == year) {
 			this.weekPickerInWeek.setMinValue(week);
 			this.monthPickerInMonth.setMinValue(month);
