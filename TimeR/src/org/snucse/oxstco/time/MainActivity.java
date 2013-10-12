@@ -30,7 +30,8 @@ public class MainActivity extends FragmentActivity {
 	private static Calendar pageCalendar = null;
 
 	/**
-	 * 在onCreate方法中被初始化为当前对象， 使得其他类中可直接通过该静态引用获得该MainActivity。
+	 * 在onCreate方法中被初始化为当前对象， </br>
+	 * 使得其他类中可直接通过该静态引用获得该MainActivity。
 	 */
 	public static MainActivity activity;
 
