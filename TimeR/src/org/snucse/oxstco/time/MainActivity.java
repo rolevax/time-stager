@@ -52,6 +52,7 @@ public class MainActivity extends FragmentActivity {
 			String firstDay = sharedPref.getString("pref_firstDayOfWeek",
 					"fuck");
 			pageCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
+			
 			// 改动每周第一天后，变动一下当前时间以刷新当前周数。
 			pageCalendar.roll(Calendar.DAY_OF_MONTH, true);
 			pageCalendar.roll(Calendar.DAY_OF_MONTH, false);
@@ -131,8 +132,7 @@ public class MainActivity extends FragmentActivity {
 		builder.create().show();
 	}
 
-	private void getOverflowMenu() {
-
+	private void getOverflowMenu() { 
 		try {
 			ViewConfiguration config = ViewConfiguration.get(this);
 			Field menuKeyField = ViewConfiguration.class

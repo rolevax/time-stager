@@ -137,6 +137,7 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 		this.yearPickerInYear.setMaxValue(2093);
 		this.yearPickerInMonth.setMaxValue(2093);
 		/*
+		 * TODO
 		 * 翻页界面与此处需同时修改 问题： 2012-53 -> 2013-1 2013-52 -> 2013-1 -> 2014-2
 		 * 
 		 * 同一周的“周号“肯定相同，但”年号“不一定相同；
