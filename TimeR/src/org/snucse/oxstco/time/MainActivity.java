@@ -49,8 +49,8 @@ public class MainActivity extends FragmentActivity {
 			pageCalendar = Calendar.getInstance();
 			SharedPreferences sharedPref = PreferenceManager
 					.getDefaultSharedPreferences(this);
-			String firstDay = sharedPref.getString("pref_firstDayOfWeek",
-					"fuck");
+			//String firstDay = sharedPref.getString("pref_firstDayOfWeek", "fuck");
+			String firstDay = sharedPref.getString("pref_firstDayOfWeek", "2");
 			pageCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
 			
 			// 改动每周第一天后，变动一下当前时间以刷新当前周数。

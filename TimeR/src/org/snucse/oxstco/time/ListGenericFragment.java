@@ -167,8 +167,8 @@ public abstract class ListGenericFragment extends ListFragment {
 			tempCalendar = Calendar.getInstance();
 			SharedPreferences sharedPref = PreferenceManager
 					.getDefaultSharedPreferences(getActivity());
-			String firstDay = sharedPref.getString("pref_firstDayOfWeek",
-					"fuck");
+			//String firstDay = sharedPref.getString("pref_firstDayOfWeek", "fuck");
+			String firstDay = sharedPref.getString("pref_firstDayOfWeek", "2");
 			tempCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
 		}
 
