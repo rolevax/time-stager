@@ -1,6 +1,5 @@
 package org.snucse.oxstco.time;
 
-import java.lang.reflect.Field;
 import java.util.Calendar;
 
 import org.snucse.oxstco.time.business.Time;
@@ -20,7 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewConfiguration;
+import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 
@@ -45,6 +44,7 @@ public class MainActivity extends FragmentActivity {
 
 		MainActivity.activity = this;
 
+		// set calendars
 		if (pageCalendar == null) {
 			pageCalendar = Calendar.getInstance();
 			SharedPreferences sharedPref = PreferenceManager
@@ -60,9 +60,9 @@ public class MainActivity extends FragmentActivity {
 
 		setContentView(R.layout.activity_main);
 
+		// set tabs
 		tabHost = (TabHost) findViewById(android.R.id.tabhost);
-		tabHost.setup();
-
+		tabHost.setup(); 
 		tabHost.addTab(tabHost.newTabSpec("today")
 				.setIndicator(getString(R.string.tab_today))
 				.setContent(R.id.fragment_today));
@@ -81,7 +81,9 @@ public class MainActivity extends FragmentActivity {
 				MainActivity.this.getCurrentFragment().updateListFromTimes();
 			}
 		});
-		this.getOverflowMenu();
+		
+		// deleted this as irrespective to menu button
+		//this.getOverflowMenu();
 	}
 
 	@Override
@@ -132,20 +134,6 @@ public class MainActivity extends FragmentActivity {
 		builder.create().show();
 	}
 
-	private void getOverflowMenu() { 
-		try {
-			ViewConfiguration config = ViewConfiguration.get(this);
-			Field menuKeyField = ViewConfiguration.class
-					.getDeclaredField("sHasPermanentMenuKey");
-			if (menuKeyField != null) {
-				menuKeyField.setAccessible(true);
-				menuKeyField.setBoolean(config, false);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	// on click method of the add button
 	public void add(View v) {
 		int type = tabHost.getCurrentTab() + 1;
@@ -167,8 +155,19 @@ public class MainActivity extends FragmentActivity {
 		this.getCurrentFragment().onMovingPage(0);
 	}
 
+	private boolean seeAllBtnDown = false ;
 	public void all(View v) {
-		this.getCurrentFragment().seeAll();
+		Button b = (Button)v ;
+		if (!seeAllBtnDown) {
+			this.getCurrentFragment().seeAll();
+			b.setText(R.string.button_return) ;
+		} else {
+			// if pressed again, return to now
+			// (a better choice is just return to previous)
+			this.returnToNow(v) ;
+			b.setText(R.string.button_all) ;
+		}
+		this.seeAllBtnDown = !this.seeAllBtnDown ;
 	}
 
 	@Override
