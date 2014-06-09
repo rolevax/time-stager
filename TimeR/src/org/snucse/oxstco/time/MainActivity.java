@@ -80,10 +80,7 @@ public class MainActivity extends FragmentActivity {
 			public void onTabChanged(String tabId) {
 				MainActivity.this.getCurrentFragment().updateListFromTimes();
 			}
-		});
-		
-		// deleted this as irrespective to menu button
-		//this.getOverflowMenu();
+		}); 
 	}
 
 	@Override

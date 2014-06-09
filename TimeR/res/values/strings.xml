@@ -25,7 +25,7 @@
     <string name="about_title">关于作者</string>
     <string name="about_content">作者是个大好人\n老好了\n</string>
     <string name="next_title">下个版本的剧透</string>
-    <string name="next_content">1)添加due date功能\n2)UI不会永远这么土,和预想中的还差得非常远\n3)太多了都说不过来</string>
+    <string name="next_content">1)截止日期、多种提醒\n2)UI逻辑改善，界面美化\n3)其他细节</string>
 
     <string-array name="type_array">
         <item>日计划</item>
