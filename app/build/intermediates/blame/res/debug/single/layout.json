@@ -1,0 +1,38 @@
+[
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/layout/activity_main.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/layout/activity_main.xml"
+    },
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/layout/vlist.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/layout/vlist.xml"
+    },
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/layout/fragment_add_year.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/layout/fragment_add_year.xml"
+    },
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/layout/activity_add.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/layout/activity_add.xml"
+    },
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/layout/fragment_add_month.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/layout/fragment_add_month.xml"
+    },
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/layout/fragment_add_week.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/layout/fragment_add_week.xml"
+    },
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/layout/fragment_add_today.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/layout/fragment_add_today.xml"
+    },
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/layout/fragment_week.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/layout/fragment_week.xml"
+    },
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/layout/menu.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/layout/menu.xml"
+    }
+]

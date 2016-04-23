@@ -1,0 +1,44 @@
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"  
+    xmlns:tools="http://schemas.android.com/tools"  
+    android:id="@android:id/tabhost"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent"  
+    android:layout_alignParentLeft="true"  
+    android:layout_centerVertical="true" >  
+  
+    <LinearLayout  
+        android:layout_width="match_parent"  
+        android:layout_height="match_parent"  
+        android:orientation="vertical" >  
+  
+        <TabWidget  
+            android:id="@android:id/tabs"  
+            android:layout_width="match_parent"  
+            android:layout_height="wrap_content" >  
+        </TabWidget>  
+  
+        <FrameLayout  
+            android:id="@android:id/tabcontent"  
+            android:layout_width="match_parent"  
+            android:layout_height="match_parent" >  
+              
+            <fragment android:name="org.snucse.oxstco.time.ListTodayFragment"  
+                android:id="@+id/fragment_today"  
+                android:layout_width="match_parent"  
+                android:layout_height="match_parent"/>  
+              
+            <fragment android:name="org.snucse.oxstco.time.ListWeekFragment"  
+                android:id="@+id/fragment_week"  
+                android:layout_width="match_parent"  
+                android:layout_height="match_parent"/>  
+            <fragment android:name="org.snucse.oxstco.time.ListMonthFragment"  
+                android:id="@+id/fragment_month"  
+                android:layout_width="match_parent"  
+                android:layout_height="match_parent"/>  
+            <fragment android:name="org.snucse.oxstco.time.ListYearFragment"  
+                android:id="@+id/fragment_year"  
+                android:layout_width="match_parent"  
+                android:layout_height="match_parent"/>  
+       </FrameLayout>  
+    </LinearLayout>  
+</TabHost>

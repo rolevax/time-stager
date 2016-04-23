@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ListPreference
+        android:defaultValue="2"
+        android:key="pref_firstDayOfWeek"
+        android:dialogTitle="@string/pref_firstDayOfWeek"
+        android:entries="@array/weekday_array"
+        android:entryValues="@array/weekday_value_array"
+        android:title="@string/pref_firstDayOfWeek" />
+
+</PreferenceScreen>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button 
+            android:id="@+id/button_prev"
+            android:onClick="prev"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/button_prev" />
+        <TextView 
+            android:id="@+id/text_current"
+            android:layout_height="wrap_content"
+            android:layout_width="73dp"
+            android:gravity="center"
+            android:text="@string/hello_world"/>
+        <Button 
+            android:id="@+id/button_next"
+            android:onClick="next"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/button_next" />
+        <Button 
+            android:id="@+id/button_return"
+            android:onClick="returnToNow"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/button_return" />
+        <Button 
+            android:id="@+id/button_add"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/button_add" 
+            android:onClick="add"/>
+        
+    </LinearLayout>
+
+    <ListView
+        android:id="@id/android:list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false" />
+    <Button
+        android:id="@+id/button_all"
+        android:onClick="all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_all"/> 
+
+</LinearLayout>

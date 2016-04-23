@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/menu/main_activity_actions.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/menu/main_activity_actions.xml"
+    },
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/menu/add.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/menu/add.xml"
+    },
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/menu/main.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/menu/main.xml"
+    },
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/menu/week_add.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/menu/week_add.xml"
+    }
+]

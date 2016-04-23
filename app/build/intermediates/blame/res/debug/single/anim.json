@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/anim/push_bottom_out.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/anim/push_bottom_out.xml"
+    },
+    {
+        "merged": "/home/gfp/test/java/android/time-stager/app/build/intermediates/res/merged/debug/anim/push_bottom_in.xml",
+        "source": "/home/gfp/test/java/android/time-stager/app/src/main/res/anim/push_bottom_in.xml"
+    }
+]
