@@ -1,4 +1,4 @@
-package org.snucse.oxstco.time;
+package rolevax.time;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.snucse.oxstco.time.business.DBMgr;
-import org.snucse.oxstco.time.business.Time;
+import rolevax.time.business.DBMgr;
+import rolevax.time.business.Time;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

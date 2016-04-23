@@ -22,20 +22,20 @@
             android:layout_width="match_parent"  
             android:layout_height="match_parent" >  
               
-            <fragment android:name="org.snucse.oxstco.time.ListTodayFragment"  
+            <fragment android:name="rolevax.time.ListTodayFragment"
                 android:id="@+id/fragment_today"  
                 android:layout_width="match_parent"  
                 android:layout_height="match_parent"/>  
               
-            <fragment android:name="org.snucse.oxstco.time.ListWeekFragment"  
+            <fragment android:name="rolevax.time.ListWeekFragment"
                 android:id="@+id/fragment_week"  
                 android:layout_width="match_parent"  
                 android:layout_height="match_parent"/>  
-            <fragment android:name="org.snucse.oxstco.time.ListMonthFragment"  
+            <fragment android:name="rolevax.time.ListMonthFragment"
                 android:id="@+id/fragment_month"  
                 android:layout_width="match_parent"  
                 android:layout_height="match_parent"/>  
-            <fragment android:name="org.snucse.oxstco.time.ListYearFragment"  
+            <fragment android:name="rolevax.time.ListYearFragment"
                 android:id="@+id/fragment_year"  
                 android:layout_width="match_parent"  
                 android:layout_height="match_parent"/>  

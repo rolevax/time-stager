@@ -2,7 +2,7 @@
 manifest
 ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:2:1-38:12
 	package
-		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:3:5-37
+		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:3:5-27
 		INJECTED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml
 		INJECTED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml
 	android:versionName
@@ -35,12 +35,12 @@ ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.
 		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:13:9-45
 	android:theme
 		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:15:9-40
-activity#org.snucse.oxstco.time.MainActivity
+activity#rolevax.time.MainActivity
 ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:16:9-24:20
 	android:label
 		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:18:13-45
 	android:name
-		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:17:13-63
+		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:17:13-53
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
 ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:19:13-23:29
 action#android.intent.action.MAIN
@@ -51,21 +51,21 @@ category#android.intent.category.LAUNCHER
 ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:22:17-77
 	android:name
 		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:22:27-74
-activity#org.snucse.oxstco.time.MenuActivity
+activity#rolevax.time.MenuActivity
 ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:25:9-27:58
 	android:theme
 		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:27:13-55
 	android:name
-		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:26:13-63
-activity#org.snucse.oxstco.time.SettingsActivity
+		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:26:13-53
+activity#rolevax.time.SettingsActivity
 ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:28:9-31:20
 	android:label
 		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:30:13-60
 	android:name
-		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:29:13-67
-activity#org.snucse.oxstco.time.AddActivity
+		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:29:13-57
+activity#rolevax.time.AddActivity
 ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:32:9-35:20
 	android:label
 		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:34:13-55
 	android:name
-		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:33:13-62
+		ADDED from /home/gfp/test/java/android/time-stager/app/src/main/AndroidManifest.xml:33:13-52

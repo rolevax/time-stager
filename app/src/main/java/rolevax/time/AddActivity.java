@@ -1,9 +1,9 @@
-package org.snucse.oxstco.time;
+package rolevax.time;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.snucse.oxstco.time.business.Time;
+import rolevax.time.business.Time;
 
 import android.app.Activity;
 import android.content.Intent;

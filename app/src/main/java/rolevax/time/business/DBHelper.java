@@ -1,4 +1,4 @@
-package org.snucse.oxstco.time.business;
+package rolevax.time.business;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -1,10 +1,10 @@
-package org.snucse.oxstco.time.business;
+package rolevax.time.business;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-import org.snucse.oxstco.time.ListGenericFragment;
+import rolevax.time.ListGenericFragment;
 
 import android.annotation.SuppressLint;
 

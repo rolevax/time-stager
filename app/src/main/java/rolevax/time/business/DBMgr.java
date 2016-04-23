@@ -1,4 +1,4 @@
-package org.snucse.oxstco.time.business;
+package rolevax.time.business;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

@@ -68,25 +68,25 @@
 
             <fragment
                 android:id="@+id/add_today_fragment"
-                android:name="org.snucse.oxstco.time.AddTodayFragment"
+                android:name="rolevax.time.AddTodayFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <fragment
                 android:id="@+id/add_week_fragment"
-                android:name="org.snucse.oxstco.time.AddWeekFragment"
+                android:name="rolevax.time.AddWeekFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <fragment
                 android:id="@+id/add_month_fragment"
-                android:name="org.snucse.oxstco.time.AddMonthFragment"
+                android:name="rolevax.time.AddMonthFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <fragment
                 android:id="@+id/add_year_fragment"
-                android:name="org.snucse.oxstco.time.AddYearFragment"
+                android:name="rolevax.time.AddYearFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>

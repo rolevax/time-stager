@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.snucse.oxstco.time.test">
+    package="rolevax.time.test">
 
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="18" />
 
@@ -9,8 +9,8 @@
     </application>
 
     <instrumentation android:name="android.test.InstrumentationTestRunner"
-                     android:targetPackage="org.snucse.oxstco.time"
+                     android:targetPackage="rolevax.time"
                      android:handleProfiling="false"
                      android:functionalTest="false"
-                     android:label="Tests for org.snucse.oxstco.time"/>
+                     android:label="Tests for rolevax.time"/>
 </manifest>

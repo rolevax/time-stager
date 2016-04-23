@@ -1,8 +1,8 @@
-package org.snucse.oxstco.time;
+package rolevax.time;
 
 import java.util.Calendar;
 
-import org.snucse.oxstco.time.business.Time;
+import rolevax.time.business.Time;
 
 
 

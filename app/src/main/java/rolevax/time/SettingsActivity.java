@@ -1,4 +1,4 @@
-package org.snucse.oxstco.time;
+package rolevax.time;
 
 import android.app.Activity;
 import android.os.Bundle;
