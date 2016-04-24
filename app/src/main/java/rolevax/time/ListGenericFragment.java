@@ -91,7 +91,7 @@ public abstract class ListGenericFragment extends ListFragment {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		//menu.add(0, MENU_EDIT, 2, "Edit");
 		menu.add(0, MENU_DELETE, 0, "完成／撤销");
-		menu.add(1, MENU_EDIT, 1, "提前／推迟");
+		menu.add(1, MENU_EDIT, 1, "编辑");
 		if (this.type > ListGenericFragment.TODAY) {
 			menu.add(1, MENU_TO_DAY, 5, "安排到某日");
 		}
@@ -167,7 +167,6 @@ public abstract class ListGenericFragment extends ListFragment {
 			tempCalendar = Calendar.getInstance();
 			SharedPreferences sharedPref = PreferenceManager
 					.getDefaultSharedPreferences(getActivity());
-			//String firstDay = sharedPref.getString("pref_firstDayOfWeek", "fuck");
 			String firstDay = sharedPref.getString("pref_firstDayOfWeek", "2");
 			tempCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
 		}

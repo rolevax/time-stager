@@ -100,7 +100,7 @@ public class AddActivity extends Activity implements OnTimeChangedListener,
 
 		SharedPreferences sharedPref = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		String firstDay = sharedPref.getString("pref_firstDayOfWeek", "fuck");
+		String firstDay = sharedPref.getString("pref_firstDayOfWeek", "2");
 		calendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
 
 		this.request = intent.getIntExtra("requestCode", -1);

@@ -38,8 +38,7 @@ public class SettingsFragment extends PreferenceFragment implements
 		if (key.equals("pref_firstDayOfWeek")) {
 			SharedPreferences sharedPref = PreferenceManager
 					.getDefaultSharedPreferences(getActivity());
-			String firstDay = sharedPref.getString(key,
-					"fuck");
+			String firstDay = sharedPref.getString(key, "2");
 			int iDay = Integer.parseInt(firstDay);
 			
 			MainActivity.getPageCalendar().setFirstDayOfWeek(iDay);

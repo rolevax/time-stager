@@ -49,7 +49,6 @@ public class MainActivity extends FragmentActivity {
 			pageCalendar = Calendar.getInstance();
 			SharedPreferences sharedPref = PreferenceManager
 					.getDefaultSharedPreferences(this);
-			//String firstDay = sharedPref.getString("pref_firstDayOfWeek", "fuck");
 			String firstDay = sharedPref.getString("pref_firstDayOfWeek", "2");
 			pageCalendar.setFirstDayOfWeek(Integer.parseInt(firstDay));
 			
@@ -152,19 +151,8 @@ public class MainActivity extends FragmentActivity {
 		this.getCurrentFragment().onMovingPage(0);
 	}
 
-	private boolean seeAllBtnDown = false ;
 	public void all(View v) {
-		Button b = (Button)v ;
-		if (!seeAllBtnDown) {
-			this.getCurrentFragment().seeAll();
-			b.setText(R.string.button_return) ;
-		} else {
-			// if pressed again, return to now
-			// (a better choice is just return to previous)
-			this.returnToNow(v) ;
-			b.setText(R.string.button_all) ;
-		}
-		this.seeAllBtnDown = !this.seeAllBtnDown ;
+		this.getCurrentFragment().seeAll();
 	}
 
 	@Override
